@@ -7,160 +7,445 @@
 <title>Pizza Coin - Pay with Visa MC or PayPal</title>
 
 <style>
-    * {
-        box-sizing: border-box;
-    }
+* {
+    box-sizing: border-box;
+}
 
-    html, body {
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        min-height: 100%;
-        background: #000;
-        font-family: Arial, Helvetica, sans-serif;
-        overflow-x: hidden; /* Prevents unwanted horizontal scrolling */
-    }
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100%;
+    background: #000;
+    font-family: Arial, Helvetica, sans-serif;
+    overflow-x: hidden;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+
+    border: 8px solid #39ff14;
+
+    box-shadow:
+        inset 0 0 20px #39ff14,
+        inset 0 0 50px #39ff14,
+        0 0 20px #39ff14,
+        0 0 50px #39ff14;
+
+    color: #fff;
+}
+
+.checkout-box {
+    width: 100%;
+    max-width: 650px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    padding: 30px 15px;
+
+    border: 4px solid #39ff14;
+    border-radius: 25px;
+
+    box-shadow:
+        0 0 15px #39ff14,
+        0 0 35px #39ff14,
+        inset 0 0 20px rgba(57,255,20,0.25);
+}
+
+h1,
+h2,
+.secure,
+.wallet-instruction,
+.wallet-link,
+.terms-box {
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+
+h1 {
+    margin: 0 0 12px 0;
+
+    font-size: clamp(28px, 6vw, 58px);
+    font-weight: 900;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+
+    color: #39ff14;
+
+    text-shadow:
+        0 0 5px #39ff14,
+        0 0 10px #39ff14,
+        0 0 20px #39ff14;
+}
+
+h2 {
+    margin: 0 0 25px 0;
+
+    font-size: clamp(16px, 4vw, 30px);
+    font-weight: 900;
+
+    color: #fff;
+
+    text-shadow:
+        0 0 5px #39ff14,
+        0 0 12px #39ff14;
+}
+
+/* =====================================================
+   WALLET SECTION
+   ===================================================== */
+
+.wallet-section {
+    width: 100%;
+    max-width: 550px;
+
+    margin: 0 auto 20px auto;
+    padding: 18px;
+
+    background: #050505;
+
+    border: 3px solid #39ff14;
+    border-radius: 15px;
+
+    box-shadow:
+        0 0 12px #39ff14,
+        inset 0 0 10px rgba(57,255,20,0.20);
+}
+
+/* VERY LARGE AND VISIBLE INSTRUCTION */
+
+.wallet-instruction {
+    display: block;
+
+    margin: 0 0 14px 0;
+
+    color: #39ff14 !important;
+    background: #000;
+
+    font-size: clamp(20px, 5vw, 30px);
+    line-height: 1.25;
+
+    font-weight: 900;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.5px;
+
+    text-shadow:
+        0 0 4px #39ff14,
+        0 0 8px #39ff14;
+
+    opacity: 1 !important;
+}
+
+/* Wallet input */
+
+#wallet {
+    display: block;
+
+    width: 100%;
+
+    min-height: 58px;
+
+    padding: 12px 14px;
+
+    border: 3px solid #39ff14;
+    border-radius: 10px;
+
+    background: #111;
+
+    color: #fff;
+
+    font-size: 19px;
+    font-weight: 700;
+
+    text-align: center;
+
+    outline: none;
+
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+#wallet:focus {
+    border-color: #fff;
+
+    box-shadow:
+        0 0 8px #39ff14,
+        0 0 18px #39ff14;
+}
+
+#wallet::placeholder {
+    color: #39ff14 !important;
+    opacity: 1 !important;
+    font-weight: 900;
+}
+
+/* Error message */
+
+#wallet-error {
+    display: none;
+
+    margin-top: 10px;
+
+    color: #ff4444;
+
+    font-size: 17px;
+    font-weight: 900;
+}
+
+/* Free wallet link */
+
+.wallet-link {
+    display: block;
+
+    margin-top: 14px;
+
+    padding: 12px 8px;
+
+    color: #39ff14 !important;
+
+    font-size: clamp(17px, 4vw, 21px);
+
+    font-weight: 900;
+
+    text-transform: uppercase;
+
+    text-decoration: underline;
+
+    text-shadow:
+        0 0 4px #39ff14,
+        0 0 8px #39ff14;
+
+    cursor: pointer;
+
+    touch-action: manipulation;
+}
+
+.wallet-link:hover {
+    color: #fff !important;
+}
+
+/* =====================================================
+   TERMS AND CONDITIONS
+   ===================================================== */
+
+.terms-box {
+    width: 100%;
+    max-width: 550px;
+
+    margin: 5px auto 20px auto;
+
+    padding: 16px;
+
+    background: #050505;
+
+    border: 3px solid #39ff14;
+    border-radius: 15px;
+
+    box-shadow:
+        0 0 12px #39ff14,
+        inset 0 0 10px rgba(57,255,20,0.18);
+}
+
+.terms-label {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 12px;
+
+    width: 100%;
+
+    color: #fff;
+
+    font-size: clamp(16px, 4vw, 20px);
+
+    font-weight: 900;
+
+    line-height: 1.4;
+
+    cursor: pointer;
+
+    text-align: left;
+
+    touch-action: manipulation;
+}
+
+/* Large checkbox */
+
+#terms {
+    flex: 0 0 auto;
+
+    width: 28px;
+    height: 28px;
+
+    margin: 0;
+
+    cursor: pointer;
+
+    accent-color: #39ff14;
+
+    transform: scale(1.15);
+}
+
+/* Terms link */
+
+.terms-label a {
+    color: #39ff14;
+
+    font-weight: 900;
+
+    text-decoration: underline;
+}
+
+.terms-label a:hover {
+    color: #fff;
+}
+
+/* =====================================================
+   PAYPAL AREA
+   ===================================================== */
+
+.paypal-area {
+    width: 100%;
+    max-width: 500px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 15px;
+
+    background: #fff;
+
+    border: 3px solid #39ff14;
+    border-radius: 18px;
+
+    box-shadow:
+        0 0 15px #39ff14,
+        0 0 30px #39ff14;
+
+    touch-action: manipulation;
+
+    position: relative;
+
+    z-index: 10;
+}
+
+#paypal-container-A7Y3UP7FPV86A {
+    width: 100%;
+    max-width: 450px;
+
+    position: relative;
+
+    z-index: 11;
+}
+
+/* Disabled visual state */
+
+.paypal-locked {
+    opacity: 0.45;
+
+    pointer-events: none;
+
+    filter: grayscale(30%);
+}
+
+/* =====================================================
+   SECURE CHECKOUT
+   ===================================================== */
+
+.secure {
+    margin-top: 25px;
+
+    font-size: clamp(14px, 3.5vw, 16px);
+
+    font-weight: 900;
+
+    color: #39ff14;
+
+    text-transform: uppercase;
+
+    text-shadow:
+        0 0 6px #39ff14,
+        0 0 12px #39ff14;
+}
+
+/* =====================================================
+   MOBILE / ANDROID
+   ===================================================== */
+
+@media (max-width: 600px) {
 
     body {
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 15px;
-
-        border: 8px solid #39ff14;
-
-        box-shadow:
-            inset 0 0 20px #39ff14,
-            inset 0 0 50px #39ff14,
-            0 0 20px #39ff14,
-            0 0 50px #39ff14;
-
-        color: #fff;
+        border-width: 4px;
+        padding: 8px;
+        align-items: flex-start;
     }
 
     .checkout-box {
-        width: 100%;
-        max-width: 650px;
-
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-
-        text-align: center;
-
-        padding: 30px 15px;
-
-        border: 4px solid #39ff14;
-        border-radius: 25px;
-
-        box-shadow:
-            0 0 15px #39ff14,
-            0 0 35px #39ff14,
-            inset 0 0 20px rgba(57,255,20,0.25);
-    }
-
-    h1, h2, .secure {
-        /* Prevents text from spilling off edges */
-        overflow-wrap: break-word;
-        word-break: break-word;
-        hyphens: auto;
-        max-width: 100%;
+        padding: 20px 10px;
+        border-width: 3px;
+        margin-top: 5px;
     }
 
     h1 {
-        margin: 0 0 12px 0;
-
-        font-size: clamp(28px, 6vw, 58px);
-        font-weight: 900;
-        letter-spacing: 2px;
-        text-transform: uppercase;
-
-        color: #39ff14;
-
-        text-shadow:
-            0 0 5px #39ff14,
-            0 0 10px #39ff14,
-            0 0 20px #39ff14,
-            0 0 40px #39ff14;
+        font-size: clamp(28px, 9vw, 45px);
     }
 
     h2 {
-        margin: 0 0 25px 0;
+        font-size: clamp(17px, 5vw, 25px);
+    }
 
-        font-size: clamp(16px, 4vw, 30px);
-        font-weight: 900;
+    .wallet-section {
+        padding: 14px 10px;
+    }
 
-        color: #fff;
+    .wallet-instruction {
+        font-size: clamp(20px, 6vw, 28px);
+    }
 
-        text-shadow:
-            0 0 5px #39ff14,
-            0 0 12px #39ff14;
+    #wallet {
+        min-height: 60px;
+
+        font-size: 17px;
+
+        padding: 10px;
+    }
+
+    .wallet-link {
+        font-size: 18px;
+    }
+
+    .terms-box {
+        padding: 14px 10px;
+    }
+
+    .terms-label {
+        font-size: 16px;
+    }
+
+    #terms {
+        width: 30px;
+        height: 30px;
     }
 
     .paypal-area {
-        width: 100%;
-        max-width: 500px;
-
-        /* Flexibility ensures buttons inside render properly without overflow */
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        padding: 15px;
-        background: #fff;
-
-        border: 3px solid #39ff14;
-        border-radius: 18px;
-
-        box-shadow:
-            0 0 15px #39ff14,
-            0 0 30px #39ff14;
-            
-        /* Ensures tap/click events respond properly on Android touchscreens */
-        touch-action: manipulation;
-        position: relative;
-        z-index: 10;
+        padding: 10px;
     }
-
-    #paypal-container-A7Y3UP7FPV86A {
-        width: 100%;
-        max-width: 450px;
-        position: relative;
-        z-index: 11;
-    }
-
-    .secure {
-        margin-top: 25px;
-
-        font-size: clamp(14px, 3.5vw, 16px);
-        font-weight: 900;
-
-        color: #39ff14;
-
-        text-transform: uppercase;
-
-        text-shadow:
-            0 0 6px #39ff14,
-            0 0 12px #39ff14;
-    }
-
-    @media (max-width: 600px) {
-        body {
-            border-width: 4px;
-            padding: 8px;
-        }
-
-        .checkout-box {
-            padding: 20px 10px;
-            border-width: 3px;
-        }
-
-        .paypal-area {
-            padding: 10px;
-        }
-    }
+}
 </style>
 
 <!-- PayPal SDK -->
@@ -178,9 +463,102 @@
 
     <h2>PAY WITH VISA MC OR PAYPAL HERE</h2>
 
-    <div class="paypal-area">
-        <div id="paypal-container-A7Y3UP7FPV86A"></div>
+
+    <!-- =================================================
+         WALLET INFORMATION
+         ================================================= -->
+
+    <div class="wallet-section">
+
+        <label
+            for="wallet"
+            class="wallet-instruction"
+        >
+            ENTER YOUR POLYGON WALLET ADDRESS<br>
+            (0x.....)
+        </label>
+
+        <input
+            id="wallet"
+            name="wallet"
+            type="text"
+            inputmode="text"
+            autocomplete="off"
+            spellcheck="false"
+            placeholder="0x..."
+            required
+            pattern="^0x[a-fA-F0-9]{40}$"
+            title="Enter a valid Polygon/EVM wallet address beginning with 0x"
+        >
+
+        <div id="wallet-error">
+            PLEASE ENTER A VALID WALLET ADDRESS BEGINNING WITH 0x
+        </div>
+
+
+        <!-- Free wallet download -->
+
+        <a
+            class="wallet-link"
+            href="https://metamask.io/download/"
+            target="_blank"
+            rel="noopener noreferrer"
+        >
+            DON'T HAVE A WALLET?<br>
+            GET A FREE WALLET HERE
+        </a>
+
     </div>
+
+
+    <!-- =================================================
+         TERMS AND CONDITIONS
+         IMMEDIATELY BEFORE CHECKOUT
+         ================================================= -->
+
+    <div class="terms-box">
+
+        <label
+            for="terms"
+            class="terms-label"
+        >
+
+            <input
+                type="checkbox"
+                id="terms"
+                name="terms"
+                required
+            >
+
+            <span>
+                I AGREE TO THE
+                <a
+                    href="/terms.html"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    TERMS AND CONDITIONS
+                </a>
+            </span>
+
+        </label>
+
+    </div>
+
+
+    <!-- =================================================
+         PAYPAL CHECKOUT
+         ================================================= -->
+
+    <div
+        class="paypal-area paypal-locked"
+        id="paypal-area"
+    >
+
+        <div id="paypal-container-A7Y3UP7FPV86A"></div>
+
+    </div>
+
 
     <div class="secure">
         🔒 SECURE CHECKOUT 🔒
@@ -188,10 +566,114 @@
 
 </div>
 
+
 <script>
-    paypal.HostedButtons({
-        hostedButtonId: "A7Y3UP7FPV86A",
-    }).render("#paypal-container-A7Y3UP7FPV86A");
+/* =====================================================
+   WALLET + TERMS VALIDATION
+   ===================================================== */
+
+(function () {
+
+    const wallet = document.getElementById("wallet");
+    const terms = document.getElementById("terms");
+    const paypalArea = document.getElementById("paypal-area");
+    const walletError = document.getElementById("wallet-error");
+
+    function validWallet() {
+
+        const value = wallet.value.trim();
+
+        return /^0x[a-fA-F0-9]{40}$/.test(value);
+    }
+
+    function updateCheckoutState() {
+
+        const walletOK = validWallet();
+        const termsOK = terms.checked;
+
+        if (walletOK) {
+            walletError.style.display = "none";
+        }
+
+        if (walletOK && termsOK) {
+
+            paypalArea.classList.remove("paypal-locked");
+
+        } else {
+
+            paypalArea.classList.add("paypal-locked");
+
+        }
+    }
+
+    wallet.addEventListener("input", updateCheckoutState);
+
+    wallet.addEventListener("blur", function () {
+
+        if (wallet.value.trim() !== "" && !validWallet()) {
+
+            walletError.style.display = "block";
+
+        } else {
+
+            walletError.style.display = "none";
+
+        }
+
+        updateCheckoutState();
+    });
+
+    terms.addEventListener("change", updateCheckoutState);
+
+    /* Prevent checkout if requirements aren't satisfied */
+
+    paypalArea.addEventListener("click", function (event) {
+
+        if (!validWallet()) {
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            wallet.focus();
+
+            walletError.style.display = "block";
+
+            alert(
+                "PLEASE ENTER YOUR POLYGON WALLET ADDRESS BEFORE CHECKOUT."
+            );
+
+            return false;
+        }
+
+        if (!terms.checked) {
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            terms.focus();
+
+            alert(
+                "PLEASE AGREE TO THE TERMS AND CONDITIONS BEFORE CHECKOUT."
+            );
+
+            return false;
+        }
+
+    }, true);
+
+    updateCheckoutState();
+
+})();
+
+
+/* =====================================================
+   PAYPAL HOSTED BUTTON
+   ===================================================== */
+
+paypal.HostedButtons({
+    hostedButtonId: "A7Y3UP7FPV86A"
+}).render("#paypal-container-A7Y3UP7FPV86A");
+
 </script>
 
 </body>
