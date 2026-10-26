@@ -513,7 +513,6 @@ h2 {
 
     <!-- =================================================
          TERMS AND CONDITIONS
-         IMMEDIATELY BEFORE CHECKOUT
          ================================================= -->
 
     <div class="terms-box">
@@ -569,7 +568,7 @@ h2 {
 
 <script>
 /* =====================================================
-   WALLET + TERMS VALIDATION
+   WALLET + TERMS VALIDATION & RENDER BACKEND SYNC
    ===================================================== */
 
 (function () {
@@ -580,14 +579,11 @@ h2 {
     const walletError = document.getElementById("wallet-error");
 
     function validWallet() {
-
         const value = wallet.value.trim();
-
         return /^0x[a-fA-F0-9]{40}$/.test(value);
     }
 
     function updateCheckoutState() {
-
         const walletOK = validWallet();
         const termsOK = terms.checked;
 
@@ -596,69 +592,42 @@ h2 {
         }
 
         if (walletOK && termsOK) {
-
             paypalArea.classList.remove("paypal-locked");
-
         } else {
-
             paypalArea.classList.add("paypal-locked");
-
         }
     }
 
     wallet.addEventListener("input", updateCheckoutState);
 
     wallet.addEventListener("blur", function () {
-
         if (wallet.value.trim() !== "" && !validWallet()) {
-
             walletError.style.display = "block";
-
         } else {
-
             walletError.style.display = "none";
-
         }
-
         updateCheckoutState();
     });
 
     terms.addEventListener("change", updateCheckoutState);
 
-    /* Prevent checkout if requirements aren't satisfied */
-
     paypalArea.addEventListener("click", function (event) {
-
         if (!validWallet()) {
-
             event.preventDefault();
             event.stopPropagation();
-
             wallet.focus();
-
             walletError.style.display = "block";
-
-            alert(
-                "PLEASE ENTER YOUR POLYGON WALLET ADDRESS BEFORE CHECKOUT."
-            );
-
+            alert("PLEASE ENTER YOUR POLYGON WALLET ADDRESS BEFORE CHECKOUT.");
             return false;
         }
 
         if (!terms.checked) {
-
             event.preventDefault();
             event.stopPropagation();
-
             terms.focus();
-
-            alert(
-                "PLEASE AGREE TO THE TERMS AND CONDITIONS BEFORE CHECKOUT."
-            );
-
+            alert("PLEASE AGREE TO THE TERMS AND CONDITIONS BEFORE CHECKOUT.");
             return false;
         }
-
     }, true);
 
     updateCheckoutState();
@@ -667,11 +636,46 @@ h2 {
 
 
 /* =====================================================
-   PAYPAL HOSTED BUTTON
+   PAYPAL HOSTED BUTTON WITH RENDER & GOOGLE SHEETS SYNC
    ===================================================== */
 
 paypal.HostedButtons({
-    hostedButtonId: "A7Y3UP7FPV86A"
+    hostedButtonId: "A7Y3UP7FPV86A",
+    onApprove: function(data, actions) {
+        return actions.order.capture().then(function(orderData) {
+            const walletInput = document.getElementById("wallet").value.trim();
+            const urlParams = new URLSearchParams(window.location.search);
+            const affiliateId = urlParams.get("ref") || localStorage.getItem("pzzcAffiliateId") || "MAIN";
+            
+            const buyerEmail = orderData.payer && orderData.payer.email_address ? orderData.payer.email_address : "customer@example.com";
+            const orderId = orderData.id || `PP-${Date.now()}`;
+            
+            let saleAmount = 100; // Default amount fallback for hosted buttons
+            if (orderData.purchase_units && orderData.purchase_units[0] && orderData.purchase_units[0].amount) {
+                saleAmount = parseFloat(orderData.purchase_units[0].amount.value) || 100;
+            }
+
+            fetch("https://pizza-backend-8if7.onrender.com/api/verify-usdc-order", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    email: buyerEmail,
+                    polygonAddress: walletInput,
+                    pzzcAmount: String(saleAmount),
+                    paymentCrypto: "USDC",
+                    affiliateId: affiliateId,
+                    txHash: orderId
+                })
+            })
+            .then(res => res.json())
+            .then(result => {
+                console.log("Verified sale reported to Render/Google Sheets:", result);
+            })
+            .catch(err => {
+                console.error("Failed to report sale:", err);
+            });
+        });
+    }
 }).render("#paypal-container-A7Y3UP7FPV86A");
 
 </script>
