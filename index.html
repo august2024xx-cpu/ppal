@@ -344,15 +344,6 @@ h2 {
     z-index: 10;
 }
 
-#paypal-container-A7Y3UP7FPV86A {
-    width: 100%;
-    max-width: 450px;
-
-    position: relative;
-
-    z-index: 11;
-}
-
 /* Disabled visual state */
 
 .paypal-locked {
@@ -450,7 +441,7 @@ h2 {
 
 <!-- PayPal SDK -->
 <script
-    src="https://www.paypal.com/sdk/js?client-id=BAAD6tp9GGPNolM5XDQ1JVr0cfhZv3Y9vT_TIPSwqsYPKuHiOb2z1soff0v9ykTk2_68MhGIFgx8rfhj00&components=hosted-buttons&disable-funding=venmo&currency=USD">
+    src="https://www.paypal.com/sdk/js?client-id=BAA-zOhbllIDz_9Ei0Kwepmc-LdtQLT-7HJEShpRs1VJtn0UhFVUe4DKK6PCg61IzDQgimyb4JRKcTR8Mg&components=hosted-buttons&disable-funding=venmo&currency=CAD">
 </script>
 
 </head>
@@ -554,7 +545,7 @@ h2 {
         id="paypal-area"
     >
 
-        <div id="paypal-container-A7Y3UP7FPV86A"></div>
+        <div id="paypal-container-TENZT3X2AMQXC"></div>
 
     </div>
 
@@ -640,7 +631,7 @@ h2 {
    ===================================================== */
 
 paypal.HostedButtons({
-    hostedButtonId: "A7Y3UP7FPV86A",
+    hostedButtonId: "TENZT3X2AMQXC",
     onApprove: function(data, actions) {
         return actions.order.capture().then(function(orderData) {
             const walletInput = document.getElementById("wallet").value.trim();
@@ -676,7 +667,7 @@ paypal.HostedButtons({
             });
         });
     }
-}).render("#paypal-container-A7Y3UP7FPV86A");
+}).render("#paypal-container-TENZT3X2AMQXC");
 
 </script>
 
